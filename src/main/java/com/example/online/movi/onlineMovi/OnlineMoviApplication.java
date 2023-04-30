@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class OnlineMoviApplication {
 	
-
 	public static void main(String[] args) {
 		SpringApplication.run(OnlineMoviApplication.class, args);
 	}
