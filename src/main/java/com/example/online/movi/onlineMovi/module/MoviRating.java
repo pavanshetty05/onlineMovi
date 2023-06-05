@@ -8,6 +8,9 @@ public class MoviRating  implements Serializable{
 	public String moverating;
 	
 	
+	public MoviRating() {
+		super();
+	}
 	public MoviRating(String moveID, String moverating) {
 		super();
 		this.moveID = moveID;

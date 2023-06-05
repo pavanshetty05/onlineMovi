@@ -15,6 +15,10 @@ public class UserModule implements Serializable{
 	
 	
 
+	public UserModule() {
+		super();
+	}
+
 	public UserModule(String userName, Integer userID, String lastName, List<MoviRating> moveRating,
 			List<MovePriceModule> movePricing) {
 		super();
