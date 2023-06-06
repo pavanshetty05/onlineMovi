@@ -1,40 +1,73 @@
 package com.example.online.movi.onlineMovi.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.http.HttpEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import com.example.online.movi.onlineMovi.module.MovePriceModule;
+import com.example.online.movi.onlineMovi.module.MoviRating;
 import com.example.online.movi.onlineMovi.module.UserModule;
 
 @RestController
 @RequestMapping(value = "/movi")
 public class MoverequestController {
 
+	@Autowired
+	RestTemplate orest;
+
+	Logger log = LoggerFactory.getLogger(MoverequestController.class);
+
 	@RequestMapping(value = "/details", method = RequestMethod.POST, consumes = "application/json")
 	public @ResponseBody UserModule addMoveDetails(@RequestBody UserModule ouser) {
 
 		return ouser;
+
 	}
 
-	@RequestMapping(value = "/details", method = RequestMethod.GET, consumes = "application/json")
-	public @ResponseBody UserModule getMoveDetails(@PathVariable String userID) {
+	@RequestMapping(value = "/details", method = RequestMethod.GET)
+	public @ResponseBody UserModule getMoveDetails() {
+		log.info("Came inside the add");
+		UserModule returnOuser = new UserModule();
+		returnOuser.setLastName("pavan");
+		returnOuser.setUserID(344);
+		MoviRating omovRating = orest.getForObject("http://localhost:8082/movi/rating", MoviRating.class);
+		List<MoviRating> olistMove = new ArrayList<MoviRating>();
+		olistMove.add(omovRating);
+		MovePriceModule omovepricing = orest.getForObject("http://localhost:8081/movi/price", MovePriceModule.class);
+		List<MovePriceModule> olisMovePrice = new ArrayList<MovePriceModule>();
+		olisMovePrice.add(omovepricing);
+		returnOuser.setMovePricing(olisMovePrice);
+		returnOuser.setMoveRating(olistMove);
 
-		UserModule ouserMapping = new UserModule(userID, null, userID, null, null);
-		return ouserMapping;
+		log.info("Came inside the add");
+		return returnOuser;
 	}
 
 	@RequestMapping(value = "/details", method = RequestMethod.DELETE, consumes = "application/json")
 	public @ResponseBody UserModule removeDetails(@RequestBody UserModule ouser) {
-
+		log.info("Came inside the add");
 		return ouser;
 	}
 
 	@RequestMapping(value = "/details", method = RequestMethod.PUT, consumes = "application/json")
 	public @ResponseBody UserModule updateMoveDetails(@RequestBody UserModule ouser) {
-
+		log.info("Came inside the add");
 		return ouser;
 	}
 
