@@ -23,6 +23,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.example.online.movi.onlineMovi.module.MovePriceModule;
 import com.example.online.movi.onlineMovi.module.MoviRating;
 import com.example.online.movi.onlineMovi.module.UserModule;
+import com.example.online.movi.onlineMovi.service.MoveRatingService;
+import com.example.online.movi.onlineMovi.service.Movepricing;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.ribbon.proxy.annotation.Hystrix;
 
 @RestController
 @RequestMapping(value = "/movi")
@@ -30,6 +34,12 @@ public class MoverequestController {
 
 	@Autowired
 	RestTemplate orest;
+
+	@Autowired
+	Movepricing pricing;
+
+	@Autowired
+	MoveRatingService moverating;
 
 	Logger log = LoggerFactory.getLogger(MoverequestController.class);
 
@@ -44,12 +54,13 @@ public class MoverequestController {
 	public @ResponseBody UserModule getMoveDetails() {
 		log.info("Came inside the add");
 		UserModule returnOuser = new UserModule();
+		returnOuser.setUserName("make");
 		returnOuser.setLastName("pavan");
 		returnOuser.setUserID(344);
-		MoviRating omovRating = orest.getForObject("http://localhost:8082/movi/rating", MoviRating.class);
+		MoviRating omovRating = moverating.getMoveDetails();
 		List<MoviRating> olistMove = new ArrayList<MoviRating>();
 		olistMove.add(omovRating);
-		MovePriceModule omovepricing = orest.getForObject("http://localhost:8081/movi/price", MovePriceModule.class);
+		MovePriceModule omovepricing = pricing.getMoveDetails();
 		List<MovePriceModule> olisMovePrice = new ArrayList<MovePriceModule>();
 		olisMovePrice.add(omovepricing);
 		returnOuser.setMovePricing(olisMovePrice);
