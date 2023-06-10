@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.online.movi.onlineMovi.module.MoviRating;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 
 @Service
 public class MoveRatingService {
@@ -17,7 +18,13 @@ public class MoveRatingService {
 	@Autowired
 	RestTemplate orest;
 
-	@HystrixCommand(fallbackMethod = "fallBackMethod")
+	@HystrixCommand(fallbackMethod = "fallBackMethod",commandProperties = {
+	       // @HystrixProperty (name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000"),
+	        @HystrixProperty (name = "circuitBreaker.requestVolumeThreshold", value = "3"),
+	        @HystrixProperty (name = "circuitBreaker.sleepWindowInMilliseconds", value = "50"),
+	        @HystrixProperty (name = "circuitBreaker.errorThresholdPercentage", value = "2")
+		}
+	 )
 	public MoviRating getMoveDetails() {
 		MoviRating omovRating = orest.getForObject("http://localhost:8082/movi/rating", MoviRating.class);
 		return omovRating;

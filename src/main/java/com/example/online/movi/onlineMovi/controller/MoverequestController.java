@@ -26,7 +26,6 @@ import com.example.online.movi.onlineMovi.module.UserModule;
 import com.example.online.movi.onlineMovi.service.MoveRatingService;
 import com.example.online.movi.onlineMovi.service.Movepricing;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.ribbon.proxy.annotation.Hystrix;
 
 @RestController
 @RequestMapping(value = "/movi")
